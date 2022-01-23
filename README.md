@@ -14,3 +14,6 @@ As seguintes tecnologias foram utilizadas no projeto:
 - [Prismic CMS](https://prismic.io/)
 - [Stripe](https://stripe.com/)
 - [FaunaDB](https://fauna.com/)
+
+## Testes
+<img src="https://i.ibb.co/x5dZ0Gp/imagem-2022-01-23-175953.png">
