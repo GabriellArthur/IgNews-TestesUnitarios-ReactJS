@@ -26,5 +26,11 @@ As seguintes tecnologias foram adicionadas no projeto IgNews para inclusão de t
 yarn add jest jest-dom @testing-library/jest-dom @testing-library/dom @testing-library/react babel-jest -D
 ```
 
+- [identity obg proxy](https://www.npmjs.com/package/identity-obj-proxy)
+
+```
+yarn add identity-obg-proxy
+```
+
 ## Testes
 <img src="https://i.ibb.co/x5dZ0Gp/imagem-2022-01-23-175953.png">
