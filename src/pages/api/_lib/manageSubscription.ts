@@ -47,19 +47,18 @@ async function saveSubscription(
                query.Collection('subscriptions'),
                { data: subscriptionData }
             ),
-         ),
-
-         query.Replace(
-            query.Select(
-               "ref",
-               query.Get(
-                  query.Match(
-                     query.Index('subscription_by_id'),
-                     subscription.id
+            query.Replace(
+               query.Select(
+                  "ref",
+                  query.Get(
+                     query.Match(
+                        query.Index('subscription_by_id'),
+                        subscription.id
+                     )
                   )
-               )
-            ),
-            { data: subscriptionData }
+               ),
+               { data: subscriptionData }
+            )
          )
       )
    }
