@@ -28,17 +28,15 @@ async function saveSubscription(
       price_id: subscription.items.data[0].price.id,
    }
 
-   await fauna.query(
-      query.If(
-         query.Not(
-            query.Exists(
-               query.Collection('subscriptions'),
-            )
-         ),
+   if (createAction) {
+      await fauna.query(
          query.Create(
             query.Collection('subscriptions'),
-            { data: { subscriptionData } }
-         ),
+            { data: subscriptionData }
+         )
+      )
+   } else {
+      await fauna.query(
          query.Replace(
             query.Select(
                "ref",
@@ -49,11 +47,10 @@ async function saveSubscription(
                   )
                )
             ),
-            { data: { subscriptionData } }
+            { data: subscriptionData }
          )
       )
-   
-   )
+   }
 }
 
 export default saveSubscription;
