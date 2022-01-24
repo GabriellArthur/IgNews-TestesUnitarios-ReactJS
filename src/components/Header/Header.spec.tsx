@@ -1,30 +1,34 @@
-import { render, screen } from '@testing-library/react';
-
-import { Header } from '.';
+import { render, screen } from '@testing-library/react'
+import React from 'react'
+import { Header } from '.'
 
 jest.mock('next/router', () => {
   return {
-    useRouter: () => {
+    useRouter() {
       return {
-        asPath: '/',
-      };
-    },
-  };
-});
+        asPath: '/'
+      }
+    }
+  }
+})
 
 jest.mock('next-auth/client', () => {
   return {
-    useSession: () => {
-      return [null, false];
-    },
-  };
-});
+    useSession() {
+      return [null, false]
+    }
+  }
+})
 
 describe('Header component', () => {
-  it('renders correctly', () => {
-    render(<Header />);
 
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Posts')).toBeInTheDocument();
-  });
-});
+  it('renders correctly', () => {
+    render(
+      <Header />
+    )
+
+    expect(screen.getByText('Home')).toBeInTheDocument()
+    expect(screen.getByText('Posts')).toBeInTheDocument()
+  })
+
+})
