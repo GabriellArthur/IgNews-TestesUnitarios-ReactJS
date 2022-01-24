@@ -40,3 +40,14 @@ yarn add ts-jest
 
 ## Testes
 <img src="https://i.ibb.co/x5dZ0Gp/imagem-2022-01-23-175953.png">
+
+## Instaçao
+
+Instale as dependências.
+$ yarn
+
+Para executar a aplicação.
+$ yarn dev
+
+Para executar os tests.
+$ yarn test
