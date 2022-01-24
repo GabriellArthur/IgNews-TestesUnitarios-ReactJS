@@ -1,25 +1,26 @@
-import { fauna } from "../../../services/fauna";
-import { query } from "faunadb";
-import { stripe } from "../../../services/stripe";
+import { query as q } from 'faunadb';
 
-async function saveSubscription(
+import { fauna } from "../../../services/fauna";
+import { stripe } from '../../../services/stripe';
+
+export async function saveSubscription(
   subscriptionId: string,
   customerId: string,
-  createAction = false
+  createAction = false,
 ) {
   const userRef = await fauna.query(
-    query.Select(
+    q.Select(
       "ref",
-      query.Get(
-        query.Match(
-          query.Index('user_by_stripe_customer_id'),
+      q.Get(
+        q.Match(
+          q.Index('user_by_stripe_customer_id'),
           customerId
         )
       )
     )
   )
 
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId)
 
   const subscriptionData = {
     id: subscription.id,
@@ -30,20 +31,20 @@ async function saveSubscription(
 
   if (createAction) {
     await fauna.query(
-      query.Create(
-        query.Collection('subscriptions'),
+      q.Create(
+        q.Collection('subscriptions'),
         { data: subscriptionData }
       )
     )
   } else {
     await fauna.query(
-      query.Replace(
-        query.Select(
+      q.Replace(
+        q.Select(
           "ref",
-          query.Get(
-            query.Match(
-              query.Index('subscription_by_id'),
-              subscription.id
+          q.Get(
+            q.Match(
+              q.Index('subscription_by_id'),
+              subscriptionId,
             )
           )
         ),
@@ -52,5 +53,3 @@ async function saveSubscription(
     )
   }
 }
-
-export default saveSubscription;
