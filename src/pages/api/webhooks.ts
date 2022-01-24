@@ -46,6 +46,7 @@ const webhooks = async (request: NextApiRequest, response: NextApiResponse) => {
 
 
     if (relevantEvents.has(type)) {
+       console.log("entrou no customer.subscription | checkout.session");
       try {
         switch (type) {
           case 'customer.subscription.updated':
@@ -64,7 +65,7 @@ const webhooks = async (request: NextApiRequest, response: NextApiResponse) => {
 
             const checkoutSession = event.data.object as Stripe.Checkout.Session
 
-            saveSubscription(
+            await saveSubscription(
               checkoutSession.subscription.toString(),
               checkoutSession.customer.toString(),
               true
