@@ -37,6 +37,18 @@ async function saveSubscription(
       )
    } else {
       await fauna.query(
+         query.If(
+            query.Not(
+               query.Exists(
+                  query.Collection('subscriptions'),
+               )
+            ),
+            query.Create(
+               query.Collection('subscriptions'),
+               { data: subscriptionData }
+            ),
+         ),
+
          query.Replace(
             query.Select(
                "ref",
