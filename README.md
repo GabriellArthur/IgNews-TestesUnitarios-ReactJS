@@ -32,5 +32,11 @@ yarn add jest jest-dom @testing-library/jest-dom @testing-library/dom @testing-l
 yarn add identity-obg-proxy
 ```
 
+- [ts-jest](https://www.npmjs.com/package/ts-jest)
+
+```
+yarn add ts-jest
+```
+
 ## Testes
 <img src="https://i.ibb.co/x5dZ0Gp/imagem-2022-01-23-175953.png">
