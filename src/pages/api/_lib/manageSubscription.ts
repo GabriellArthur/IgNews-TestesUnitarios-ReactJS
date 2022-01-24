@@ -32,7 +32,7 @@ async function saveSubscription(
       await fauna.query(
          query.Create(
             query.Collection('subscriptions'),
-            { data: subscriptionData }
+            { data: {subscriptionData} }
          )
       )
    } else {
@@ -47,7 +47,7 @@ async function saveSubscription(
                   )
                )
             ),
-            { data: subscriptionData }
+            { data: {subscriptionData} }
          )
       )
    }
