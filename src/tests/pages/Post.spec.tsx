@@ -1,40 +1,35 @@
 import { render, screen } from '@testing-library/react'
-import { getPrismicClient } from '../../services/prismic'
-import { getSession } from 'next-auth/client'
+import { getSession } from 'next-auth/client';
 import { mocked } from 'ts-jest/utils'
-import Post, { getServerSideProps } from '../../pages/posts/[slug]'
+import Post, { getServerSideProps } from '../../pages/posts/[slug]';
+import { getPrismicClient } from '../../services/prismic'
 
-
-jest.mock('../../services/prismic')
-jest.mock('next-auth/client')
-
-const post = {
-  slug: 'my-new-post',
-  title: 'My New Post',
-  content: 'Post content',
-  updatedAt: '10 de abril'
+const post = { 
+  slug: 'my-new-post', 
+  title: 'My New Post', 
+  content: '<p>Post excerpt</p>', 
+  updatedAt: '10 de Abril'
 };
 
-describe('Posts page', () => {
+jest.mock('next-auth/client');
+jest.mock('../../services/prismic')
 
+describe('Post page', () => {
   it('renders correctly', () => {
-
     render(<Post post={post} />)
 
-    expect(screen.getByText('My New Post')).toBeInTheDocument()
+    expect(screen.getByText("My New Post")).toBeInTheDocument()
+    expect(screen.getByText("Post excerpt")).toBeInTheDocument()
+  });
 
-  })
-
-
-  it('Post', async () => {
+  it('redirects user if no subscription is found', async () => {
     const getSessionMocked = mocked(getSession)
+    
+    getSessionMocked.mockResolvedValueOnce(null)
 
-    getSessionMocked.mockReturnValueOnce(null)
-
-    const response = await getServerSideProps({
-      params: { slug: 'my-new-post' }
+    const response = await getServerSideProps({ 
+      params: { slug: 'my-new-post'} 
     } as any)
-
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -43,8 +38,7 @@ describe('Posts page', () => {
         })
       })
     )
-
-  })
+  });
 
   it('loads initial data', async () => {
     const getSessionMocked = mocked(getSession)
@@ -54,25 +48,23 @@ describe('Posts page', () => {
       getByUID: jest.fn().mockResolvedValueOnce({
         data: {
           title: [
-            { type: 'heading', text: 'My new post' },
+            { type: 'heading', text: 'My new post' }
           ],
           content: [
-            { type: 'paragraph', text: 'Post content' },
-          ]
+            { type: 'paragraph', text: 'Post content' }
+          ], 
         },
         last_publication_date: '04-01-2021'
       })
     } as any)
 
+    getSessionMocked.mockResolvedValueOnce({
+      activeSubscription: 'fake-active-subscription'
+    } as any);
 
-    getSessionMocked.mockReturnValueOnce({
-      activeSubscription: 'fake-active-subscrition'
+    const response = await getServerSideProps({ 
+      params: { slug: 'my-new-post'} 
     } as any)
-
-    const response = await getServerSideProps({
-      params: { slug: 'my-new-post' }
-    } as any)
-
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -86,7 +78,5 @@ describe('Posts page', () => {
         }
       })
     )
-
   })
-
 })
