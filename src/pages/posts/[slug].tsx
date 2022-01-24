@@ -1,10 +1,11 @@
-import { GetServerSideProps } from "next"
-import { getSession } from "next-auth/client"
-import Head from "next/head"
-import { RichText } from "prismic-dom"
-import { getPrismicClient } from "../../services/prismic"
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/client";
+import { RichText } from "prismic-dom";
+import { getPrismicClient } from "../../services/prismic";
+import Head from 'next/head';
 
 import styles from './post.module.scss';
+
 
 interface PostProps {
   post: {
@@ -19,32 +20,31 @@ export default function Post({ post }: PostProps) {
   return (
     <>
       <Head>
-        <title>{post.title} | ig.news </title>
+        <title>{post.title} | Ignews</title>
       </Head>
+
       <main className={styles.container}>
         <article className={styles.post}>
           <h1>{post.title}</h1>
           <time>{post.updatedAt}</time>
           <div
-            dangerouslySetInnerHTML={{ __html: post.content }}
             className={styles.postContent}
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
       </main>
     </>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
   const session = await getSession({ req })
   const { slug } = params;
 
-  console.log(session)
-
   if (!session?.activeSubscription) {
     return {
       redirect: {
-        destination: `/posts/preview/${slug}`,
+        destination: '/',
         permanent: false,
       }
     }
@@ -64,10 +64,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
       year: 'numeric'
     })
   }
+
   return {
     props: {
-      post,
+      post
     }
   }
-
 }

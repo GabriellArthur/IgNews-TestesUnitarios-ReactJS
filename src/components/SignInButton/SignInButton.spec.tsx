@@ -1,38 +1,39 @@
-import { render, screen } from '@testing-library/react';
-
-import { mocked } from 'jest-mock';
-
-import { useSession } from 'next-auth/client';
-import { SignInButton } from '../../components/SignInButton';
-
+import { render, screen } from '@testing-library/react'
+import { mocked } from 'ts-jest/utils'
+import React from 'react'
+import { useSession } from 'next-auth/client'
+import { SignInButton } from '.'
 
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/client')
 
 describe('SignInButton component', () => {
-  it('renders correctly when user is not authenticated', () => {
-    const useSessionMocked = mocked(useSession);
 
-    useSessionMocked.mockReturnValueOnce([null, false]);
+  it('renders correctly when use is not authenticated', () => {
+    const useSessionMocked = mocked(useSession)
 
-    render(<SignInButton />);
+    useSessionMocked.mockReturnValueOnce([null, false])
 
-    expect(screen.getByText('Sign in with Github')).toBeInTheDocument();
-  });
+    render(
+      <SignInButton />
+    )
 
-  it('renders correctly when user is authenticated', () => {
-    const useSessionMocked = mocked(useSession);
+    expect(screen.getByText('Sign in with Github')).toBeInTheDocument()
+  })
 
-    useSessionMocked.mockReturnValueOnce([
-      {
-        user: { name: 'John Doe', email: 'john.doe@example.com' },
-        expires: 'fake-expires',
-      },
-      false,
-    ]);
+  it('renders correctly when use is authenticated', () => {
+    const useSessionMocked = mocked(useSession)
 
-    render(<SignInButton />);
+    useSessionMocked.mockReturnValueOnce([{
+      user: { name: 'John Doe', email: 'john.doe@exemplo.com' },
+      expires: 'fake-expires'
+    }, false])
 
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-  });
-});
+    render(
+      <SignInButton />
+    )
+
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
+  })
+
+})

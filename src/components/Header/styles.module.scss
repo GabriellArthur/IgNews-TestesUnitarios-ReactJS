@@ -1,3 +1,4 @@
+
 .headerContainer {
   height: 5rem;
   border-bottom: 1px solid var(--gray-800);
@@ -23,7 +24,6 @@
       height: 5rem;
       line-height: 5rem;
       color: var(--gray-300);
-
       transition: color 0.2s;
 
       & + a {
@@ -33,13 +33,14 @@
       &:hover {
         color: var(--white);
       }
+
       &.active {
         color: var(--white);
         font-weight: bold;
       }
 
       &.active::after {
-        content: "";
+        content: '';
         height: 3px;
         border-radius: 3px 3px 0 0;
         width: 100%;
