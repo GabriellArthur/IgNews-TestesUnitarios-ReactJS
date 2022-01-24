@@ -1,16 +1,16 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useSession } from "next-auth/client";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from 'next/link';
 import { RichText } from "prismic-dom";
-import { useEffect } from "react";
-
 import { getPrismicClient } from "../../../services/prismic";
+import Head from 'next/head';
 
 import styles from '../post.module.scss';
+import { useSession } from "next-auth/client";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-interface PostPreviewProps {
+
+interface PostProps {
   post: {
     slug: string;
     title: string;
@@ -19,9 +19,9 @@ interface PostPreviewProps {
   }
 }
 
-export default function PostPreview({ post }: PostPreviewProps) {
-  const [session] = useSession()
-  const router = useRouter()
+export default function PostPreview({ post }: PostProps) {
+  const [session] = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (session?.activeSubscription) {
@@ -39,7 +39,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
         <article className={styles.post}>
           <h1>{post.title}</h1>
           <time>{post.updatedAt}</time>
-          <div 
+          <div
             className={`${styles.postContent} ${styles.previewContent}`}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
@@ -47,7 +47,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
           <div className={styles.continueReading}>
             Wanna continue reading?
             <Link href="/">
-              <a href="">Subscribe now 🤗</a>
+              <a>Subscribe now 🤗</a>
             </Link>
           </div>
         </article>
@@ -56,7 +56,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
     fallback: 'blocking'
@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const prismic = getPrismicClient()
 
-  const response = await prismic.getByUID('publication', String(slug), {})
+  const response = await prismic.getByUID('post', String(slug), {})
 
   const post = {
     slug,
@@ -79,12 +79,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       month: 'long',
       year: 'numeric'
     })
-  };
+  }
 
   return {
     props: {
-      post,
+      post
     },
-    redirect: 60 * 30, // 30 minutes
+    revalidate: 60 * 30, // 30 minutes
   }
 }

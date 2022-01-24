@@ -1,23 +1,25 @@
 import { render, screen } from '@testing-library/react'
-import { mocked } from 'ts-jest/utils'
-
+import { useSession } from 'next-auth/client'
 import { stripe } from '../../services/stripe'
-import Home, { getStaticProps } from '../../pages';
+import { mocked } from 'ts-jest/utils'
+import Home, { getStaticProps } from '../../pages/index'
 
 jest.mock('next/router')
-jest.mock('next-auth/client', () => {
-  return {
-    useSession: () => [null, false]
-  }
-})
+jest.mock('next-auth/client')
 jest.mock('../../services/stripe')
 
-describe('Home page', () => {
-  it('renders correctly', () => {
-    render(<Home product={{ priceId: 'fake-price-id', amount: 'R$10,00' }} />)
 
-    expect(screen.getByText("for R$10,00 month")).toBeInTheDocument()
-  });
+describe('Home page', () => {
+
+  it('renders correctly', () => {
+    const useSessionMocked = mocked(useSession)
+
+    useSessionMocked.mockReturnValueOnce([null, false])
+
+    render(<Home product={{ priceId: 'fake-price-id', amount: 10 }} />)
+
+    expect(screen.getByText('for $10.00 month')).toBeInTheDocument()
+  })
 
   it('loads initial data', async () => {
     const retriveStripePricesMocked = mocked(stripe.prices.retrieve)
@@ -34,10 +36,10 @@ describe('Home page', () => {
         props: {
           product: {
             priceId: 'fake-price-id',
-            amount: '$10.00'
+            amount: 10,
           }
         }
       })
     )
-  });
+  })
 })
