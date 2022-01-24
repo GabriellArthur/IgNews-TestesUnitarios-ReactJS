@@ -43,7 +43,7 @@ async function saveSubscription(
           query.Get(
             query.Match(
               query.Index('subscription_by_id'),
-              subscription.id
+              subscriptionId
             )
           )
         ),
