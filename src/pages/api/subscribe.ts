@@ -68,4 +68,3 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     response.status(405).send('Method not allowed');
   }
 }
-
