@@ -39,7 +39,7 @@ const webhooks = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       event = stripe.webhooks.constructEvent(buf, secret, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err) {
-      return res.status(400).send(`Webhook error: ${err.message}`);
+      return res.status(400).send(`Webhook-error: ${err.message}`);
     }
 
     const { type } = event;
@@ -61,7 +61,7 @@ const webhooks = async (req: NextApiRequest, res: NextApiResponse) => {
           case 'checkout.session.completed':
             const checkoutSession = event.data.object as Stripe.Checkout.Session
 
-            await saveSubscription(
+            saveSubscription(
               checkoutSession.subscription.toString(),
               checkoutSession.customer.toString(),
               true

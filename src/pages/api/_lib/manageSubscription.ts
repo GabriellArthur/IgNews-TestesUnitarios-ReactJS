@@ -3,7 +3,7 @@ import { query as q } from 'faunadb';
 import { fauna } from "../../../services/fauna";
 import { stripe } from '../../../services/stripe';
 
-export async function saveSubscription(
+async function saveSubscription(
    subscriptionId: string,
    customerId: string,
    createAction = false,
@@ -44,7 +44,7 @@ export async function saveSubscription(
                q.Get(
                   q.Match(
                      q.Index('subscription_by_id'),
-                     subscriptionId,
+                     subscription.id,
                   )
                )
             ),
@@ -53,3 +53,5 @@ export async function saveSubscription(
       )
    }
 }
+
+export default saveSubscription;
