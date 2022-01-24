@@ -28,29 +28,32 @@ async function saveSubscription(
       price_id: subscription.items.data[0].price.id,
    }
 
-   if (createAction) {
-      await fauna.query(
+   await fauna.query(
+      query.If(
+         query.Not(
+            query.Exists(
+               query.Collection('subscriptions'),
+                  query.Replace(
+                     query.Select(
+                        "ref",
+                        query.Get(
+                           query.Match(
+                              query.Index('subscription_by_id'),
+                              subscription.id
+                           )
+                        )
+                     ),
+                     { data: { subscriptionData } }
+                  )
+            )
+         ),
          query.Create(
             query.Collection('subscriptions'),
-            { data: {subscriptionData} }
-         )
+            { data: { subscriptionData } }
+         ),
       )
-   } else {
-      await fauna.query(
-         query.Replace(
-            query.Select(
-               "ref",
-               query.Get(
-                  query.Match(
-                     query.Index('subscription_by_id'),
-                     subscription.id
-                  )
-               )
-            ),
-            { data: {subscriptionData} }
-         )
-      )
-   }
+   
+   )
 }
 
 export default saveSubscription;
