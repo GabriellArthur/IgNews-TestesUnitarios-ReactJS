@@ -33,24 +33,24 @@ async function saveSubscription(
          query.Not(
             query.Exists(
                query.Collection('subscriptions'),
-                  query.Replace(
-                     query.Select(
-                        "ref",
-                        query.Get(
-                           query.Match(
-                              query.Index('subscription_by_id'),
-                              subscription.id
-                           )
-                        )
-                     ),
-                     { data: { subscriptionData } }
-                  )
             )
          ),
          query.Create(
             query.Collection('subscriptions'),
             { data: { subscriptionData } }
          ),
+         query.Replace(
+            query.Select(
+               "ref",
+               query.Get(
+                  query.Match(
+                     query.Index('subscription_by_id'),
+                     subscription.id
+                  )
+               )
+            ),
+            { data: { subscriptionData } }
+         )
       )
    
    )
