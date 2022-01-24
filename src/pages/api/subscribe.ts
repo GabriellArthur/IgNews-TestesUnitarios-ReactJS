@@ -13,7 +13,7 @@ type User = {
    }
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
    if (req.method === 'POST') {
       const session = await getSession({ req })
 
@@ -67,3 +67,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(405).end('Method not allowed')
    }
 }
+
+export default subscribe;
