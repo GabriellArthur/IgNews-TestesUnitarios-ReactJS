@@ -4,14 +4,13 @@ import { api } from '../../services/api';
 import { getStripeJs } from '../../services/stripe-js';
 import styles from './styles.module.scss';
 
-
 export function SubscribeButton() {
   const [session] = useSession();
-  const router = useRouter();
+  const router = useRouter()
 
   async function handleSubscribe() {
     if (!session) {
-      signIn('github');
+      signIn('github')
       return;
     }
 
@@ -27,7 +26,7 @@ export function SubscribeButton() {
 
       const stripe = await getStripeJs()
 
-      await stripe.redirectToCheckout({ sessionId });
+      await stripe.redirectToCheckout({ sessionId })
     } catch (err) {
       alert(err.message);
     }
