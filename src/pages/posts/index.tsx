@@ -1,11 +1,9 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import Prismic from '@prismicio/client'
-import { RichText } from 'prismic-dom'
 import Link from 'next/link';
-
+import Prismic from '@prismicio/client';
+import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../../services/prismic';
-
 import styles from './styles.module.scss';
 
 type Post = {
@@ -16,7 +14,7 @@ type Post = {
 };
 
 interface PostsProps {
-   posts: Post[]
+   posts: Post[];
 }
 
 export default function Posts({ posts }: PostsProps) {
@@ -33,7 +31,9 @@ export default function Posts({ posts }: PostsProps) {
                      <a>
                         <time>{post.updatedAt}</time>
                         <strong>{post.title}</strong>
-                        <p>{post.excerpt}</p>
+                        <p>
+                           {post.excerpt}
+                        </p>
                      </a>
                   </Link>
                ))}
@@ -44,14 +44,14 @@ export default function Posts({ posts }: PostsProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-   const prismic = getPrismicClient()
+   const prismic = getPrismicClient();
 
    const response = await prismic.query([
       Prismic.predicates.at('document.type', 'publication')
    ], {
       fetch: ['publication.title', 'publication.content'],
       pageSize: 100,
-   })
+   });
 
    const posts = response.results.map(post => {
       return {
@@ -61,10 +61,10 @@ export const getStaticProps: GetStaticProps = async () => {
          updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: 'long',
-            year: 'numeric'
+            year: 'numeric',
          })
-      };
-   });
+      }
+   })
 
    return {
       props: {
