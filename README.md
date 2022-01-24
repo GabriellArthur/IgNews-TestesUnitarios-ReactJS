@@ -44,10 +44,19 @@ yarn add ts-jest
 ## Instaçao
 
 Instale as dependências.
-$ yarn
+
+```
+yarn 
+```
 
 Para executar a aplicação.
-$ yarn dev
+
+```
+yarn dev
+```
 
 Para executar os tests.
-$ yarn test
+
+```
+yarn test
+```
